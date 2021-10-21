@@ -1,0 +1,16 @@
+#Указываем путь к директории, где будут храниться бэкапы
+BACKUP=/root
+
+DAY=$(date +%T)
+
+#Создаем архив
+tar --create \
+    --gzip \
+    --file=$BACKUP/backup.$DAY.tgz \
+    --ignore-failed-read \
+    --listed-incremental=$BACKUP/backup.snar \
+   /home/backup
+
+#Автоматическое исполнение каждый день
+crontab -e
+* * * * 7 /root/backup (Каждое воскресенье делать дифференциальный бэкап)
